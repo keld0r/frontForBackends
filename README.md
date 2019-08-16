@@ -1,3 +1,3 @@
-# slides-01-semver
+# backend for frontends
 
-> Buenas practicas en versionamiento usando SemVer, CHANGELOG y GIT
+> Enseñandole javascript a los backends
