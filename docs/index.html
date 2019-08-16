@@ -1,0 +1,1246 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title>Frontend 101</title>
+  <style type="text/css">
+    /**
+ * Styles inspirated by BeerJS Santiago Theme
+ * website: http://www.beerjs.cl
+ * repository: https://github.com/juanbrujo/cleaver-beerjs
+ * License: MIT LICENSE;
+ */
+
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,900);
+@import url(https://fonts.googleapis.com/css?family=Inconsolata:400,700);
+
+body {
+  font-family: "Source Sans Pro", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 100%;
+  color: #191919;
+  background-color: #f1f1f1;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#slide-1 {
+  color: #978105;
+  background: #F8DC3D;
+  background-size: cover;
+}
+
+.center {
+  text-align: center;
+}
+
+img.badge {
+  height: 128px;
+  width: 128px !important;
+  border-radius: 50% !important;
+}
+
+.slides {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.slides.active .slide:not(.hidden) {
+  border: 22px solid red;
+}
+
+.slide-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9;
+  cursor: pointer;
+  display: none;
+}
+
+.slides.active .slide:hover .slide-overlay::before {
+  content: '▶';
+  text-align: center;
+  line-height: 300px;
+  font-size: 200px;
+  color: #fff;
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.slides.active .slide:hover .slide-overlay{
+  display: block;
+  background: rgba(0,0,0,0.5);
+}
+.slide-wrapper {
+  margin: 7px;
+  -webkit-transition: all 250ms;
+  transition: all 250ms;
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 50px;
+  z-index: 1;
+  overflow: hidden;
+  box-sizing: border-box;
+  background-color: #F1F1F4;
+  display: table;
+}
+
+.slide-content {
+  position: relative;
+  z-index: 2;
+  opacity: 1;
+  margin: 0 auto;
+  padding: 0;
+  font-size: 200%;
+  font-weight: 200;
+  line-height: 1.375;
+  overflow: hidden;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.slide-content img {
+  display: block;
+  width: 70%;
+  margin: 0 auto;
+}
+
+.author-slide {
+  background-color: #2C3E50;
+  color: #f1f1f1;
+}
+
+.controls {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 3;
+}
+
+.overview {
+  display: inline-block;
+  float: left;
+  color: rgba(135, 135, 135, .5);
+  margin-right: 15px;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 30px;
+  cursor: pointer;
+}
+.overview:hover {
+  color: #000;
+  cursor: pointer;
+}
+.arrow {
+  float: left;
+  height: 0;
+  width: 0;
+  margin-right: 15px;
+  border: 15px solid rgba(135, 135, 135, .5);
+  -webkit-touch-callout: none;
+    -webkit-user-select: none;
+     -khtml-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+.arrow:hover {
+  cursor: pointer;
+}
+
+.prev {
+  border-top-color: transparent;
+  border-right-width: 25px;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  border-left-width: 0;
+}
+.prev:hover {
+  border-right-color: #000;
+}
+
+.next {
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-right-width: 0;
+  border-bottom-color: transparent;
+  border-left-width: 25px;
+}
+.prev:hover {
+  border-left-color: #000;
+}
+
+
+h1,
+h2,
+h3 {
+  font-weight: 700;
+}
+h1 {
+  font-size: 200%;
+  text-align: center;
+  line-height: 1.2;
+}
+h2 {
+  margin: 5px 0;
+  font-size: 100%;
+  font-weight: 200;
+  text-align: center;
+  line-height: 1.2;
+}
+h3 {
+  margin: 0;
+  padding-bottom: 15px;
+  font-size: 140%;
+  line-height: 1.2;
+  border-bottom: 1px ridge #191919;
+}
+ul {
+  font-weight: 200;
+  line-height: 1.375;
+  padding: 20px 0 0 60px;
+}
+blockquote {
+  padding-left: 20px;
+  margin-left: 0;
+  background: #fff;
+  border-left: 5px solid #272822;
+  border-radius: 0 3px 3px 0;
+}
+blockquote p {
+  padding: .5em;
+  color: #272822;
+}
+.left {
+  float: left;
+  width: 48%;
+}
+
+.right {
+  float: right;
+  width: 48%;
+}
+
+.author h1 {
+  margin-bottom: 30px;
+  font-size: 170%;
+  font-weight: 200;
+  text-align: center;
+}
+
+.author h3 {
+  font-size: 95%;
+  font-weight: 100;
+  text-align: center;
+  border: none;
+}
+
+.author h3.twitter::before {
+  content: 'Twitter: ';
+}
+
+.author h3.github::before {
+  content: 'Github: ';
+}
+
+.author h3.email::before {
+  content: 'Email: ';
+}
+
+.author h3.url::before {
+  content: 'Web: ';
+}
+
+a {
+  text-decoration: none;
+  color: #ff9c08;
+}
+
+a:hover {
+  color: #F8DC3D;
+  border-bottom: 1px solid #F8DC3D;
+}
+
+hr {
+  border: 1px solid #272822;
+}
+
+pre {
+  font-size: 75%;
+  line-height: 1.3;
+  background-color: rgba(0,0,0,.5);
+}
+
+table td,
+table th {
+  padding-right: 3em;
+  text-align: left;
+}
+
+.progress {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+  z-index: 2;
+}
+
+.progress-bar {
+  height: 3px;
+  width: 0;
+  background-color: #ff9c08;
+  -webkit-transition: width .15s ease-out;
+  transition: width .15s ease-out;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Code Highlighting */
+code {
+  padding: .1em .35em;
+  font-family: 'Inconsolata';
+  background-color: #fafafa;
+  border-radius: 3px;
+}
+
+pre code {
+  display: block;
+  padding: .5em;
+  font-family: 'Inconsolata';
+  font-weight: 400;
+  overflow-y: hidden;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+/*
+
+github.com style (c) Vasily Polovnyov <vast@whiteants.net>
+
+*/
+code.lang-bash-blank{
+  background: #000;
+  color: #fff!important;
+}
+code.lang-bash-blank-small{
+  background: #000;
+  color: #fff!important;
+  font-size: 0.45em;
+}
+
+kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fcfcfc;
+  border: solid 1px #ccc;
+  border-bottom-color: #bbb;
+  border-radius: 6px;
+  box-shadow: inset 0 -4px 0 #bbb;
+}
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  color: #333;
+  background: #f8f8f8;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #998;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+  color: #333;
+  font-weight: bold;
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag .hljs-attr {
+  color: #008080;
+}
+
+.hljs-string,
+.hljs-doctag {
+  color: #d14;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-selector-id {
+  color: #900;
+  font-weight: bold;
+}
+
+.hljs-subst {
+  font-weight: normal;
+}
+
+.hljs-type,
+.hljs-class .hljs-title {
+  color: #458;
+  font-weight: bold;
+}
+
+.hljs-tag,
+.hljs-name,
+.hljs-attribute {
+  color: #000080;
+  font-weight: normal;
+}
+
+.hljs-regexp,
+.hljs-link {
+  color: #009926;
+}
+
+.hljs-symbol,
+.hljs-bullet {
+  color: #990073;
+}
+
+.hljs-built_in,
+.hljs-builtin-name {
+  color: #0086b3;
+}
+
+.hljs-meta {
+  color: #999;
+  font-weight: bold;
+}
+
+.hljs-deletion {
+  background: #fdd;
+}
+
+.hljs-addition {
+  background: #dfd;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+/* Responsiveness */
+@media (max-width: 850px) {
+  body {
+    font-size: 70%;
+  }
+
+  .slide {
+    padding: 30px;
+  }
+
+  .slide-content {
+    width: auto;
+  }
+
+  img {
+    width: 100%;
+    border-radius: 3px;
+  }
+
+  .prev,
+  .prev:hover {
+    border-right-color: rgba(135, 135, 135, .5);
+  }
+
+  .next,
+  .next:hover {
+    border-left-color: rgba(135, 135, 135, .5);
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    overflow: hidden;
+    font-size: 50%;
+  }
+
+  .slide {
+    padding: 10px;
+  }
+
+  ul {
+    padding-left: 25px;
+  }
+}
+
+@media print {
+  * {
+    -webkit-print-color-adjust: exact;
+  }
+
+  @page {
+    size: letter;
+  }
+
+  .hidden {
+    display: inline;
+  }
+
+  html {
+    height: 100%;
+    width: 100%;
+    overflow: visible;
+  }
+
+  body {
+    float: none !important;
+    padding: 0;
+    margin: 0 auto !important;
+    overflow: visible;
+    font-size: 52%;
+    background: none !important;
+    border: 0;
+  }
+
+  .progress,
+  .controls {
+    display: none;
+  }
+
+  .slide {
+    position: static;
+  }
+
+  .slide-content {
+    margin-top: 0;
+    margin-bottom: 40px;
+    height: 3.5in;
+    overflow: visible;
+    border: 1px solid #222;
+
+  }
+
+  .slide:nth-child(even) {
+    page-break-before: always;
+  }
+}
+
+/*#slide-50 {
+  background-image: url("img/culloa.jpg");
+  background-repeat: no-repeat;
+  background-position: 50% 20%;
+}
+*/
+  </style>
+    <script async src="http://localhost:35729/livereload.js"></script>
+</head>
+<body>
+    <div class="progress">
+    <div class="progress-bar"></div>
+  </div>
+
+<div class="slides">
+    <div class="slide-wrapper">
+      <div class="slide" id="slide-1">
+        <div data-id="1" class="slide-overlay"></div>
+        <section class="slide-content"><h1 id="frontend-for-backends">Frontend for Backends</h1>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-2">
+        <div data-id="2" class="slide-overlay"></div>
+        <section class="slide-content"><h1 id="-que-es-javascript-">¿Que es Javascript?</h1>
+<p>Javascript es un lenguaje de programacion interpretado, <strong>no tipado*</strong> basado en el estandard ECMAScript.</p>
+<p>(El mas usado actualmente ES6).</p>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-3">
+        <div data-id="3" class="slide-overlay"></div>
+        <section class="slide-content"><h1 id="tipado-y-variables-">Tipado y variables.</h1>
+<p><img src="https://media.giphy.com/media/uHox9Jm5TyTPa/giphy.gif" alt="What meme"></p>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-4">
+        <div data-id="4" class="slide-overlay"></div>
+        <section class="slide-content"><h3 id="tipos-primitivos">Tipos primitivos</h3>
+<ul>
+<li>Boolean</li>
+<li>Null</li>
+<li>Undefined</li>
+<li>Number</li>
+<li>BigInt</li>
+<li>String</li>
+<li>Symbol</li>
+</ul>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-5">
+        <div data-id="5" class="slide-overlay"></div>
+        <section class="slide-content"><h3 id="variables-var-let-const">Variables: var, let, const</h3>
+<pre><code class="lang-js"><span class="hljs-keyword">let</span> ten = <span class="hljs-number">10</span>;
+<span class="hljs-built_in">console</span>.log(ten * ten);
+<span class="hljs-comment">// → 100</span>
+
+<span class="hljs-keyword">var</span> name = <span class="hljs-string">"Iron Team"</span>;
+<span class="hljs-keyword">const</span> greeting = <span class="hljs-string">"Hello "</span>;
+<span class="hljs-built_in">console</span>.log(greeting + name);
+<span class="hljs-comment">// → Hello Iron Team</span>
+</code></pre>
+<p>Los nombres de las variables solo pueden contener numeros, letras, signo peso <strong>$</strong> o guión bajo <strong>_</strong> </p>
+<p>Pero <strong>no puede comenzar con un numero</strong>.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> <span class="hljs-number">2018</span>scotia = <span class="hljs-string">"Iron Team"</span>;  ✘
+<span class="hljs-keyword">var</span> scotia2018 = <span class="hljs-string">"Iron Team"</span>;  ✓
+<span class="hljs-keyword">var</span> _scotia2018 = <span class="hljs-string">"Iron Team"</span>; ✓
+<span class="hljs-keyword">var</span> $scotia2018 = <span class="hljs-string">"Iron Team"</span>; ✓
+</code></pre>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-6">
+        <div data-id="6" class="slide-overlay"></div>
+        <section class="slide-content"><h3 id="las-variables-no-se-asocian-a-un-tipo-de-dato">Las variables no se asocian a un tipo de dato</h3>
+<p>En Java es necesario hacer un cast</p>
+<pre><code class="lang-js">int i = Integer.parseInt(myString);
+</code></pre>
+<p>En Javascript <strong>NO</strong></p>
+<pre><code class="lang-js"><span class="hljs-keyword">let</span> mood = <span class="hljs-string">"light"</span>;
+<span class="hljs-built_in">console</span>.log(mood);
+<span class="hljs-comment">// → light</span>
+mood = <span class="hljs-number">123</span>;
+<span class="hljs-built_in">console</span>.log(mood);
+<span class="hljs-comment">// → 123</span>
+</code></pre>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-7">
+        <div data-id="7" class="slide-overlay"></div>
+        <section class="slide-content"><h3 id="binding-y-scope-de-var-let-const">Binding y Scope de var, let, const</h3>
+<pre><code class="lang-js"><span class="hljs-keyword">let</span> x = <span class="hljs-number">10</span>;
+<span class="hljs-keyword">if</span> (<span class="hljs-literal">true</span>) {
+  <span class="hljs-keyword">let</span> y = <span class="hljs-number">20</span>;
+  <span class="hljs-keyword">var</span> z = <span class="hljs-number">30</span>;
+  <span class="hljs-keyword">let</span> x = <span class="hljs-number">1</span>;
+  <span class="hljs-built_in">console</span>.log(x + y + z);
+  <span class="hljs-comment">// → ?</span>
+}
+<span class="hljs-built_in">console</span>.log(x + z);
+<span class="hljs-comment">// → ?</span>
+</code></pre>
+<p>Var se declara de forma global, en cambio let y const se declaran dentro de su scope.</p>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-8">
+        <div data-id="8" class="slide-overlay"></div>
+        <section class="slide-content"><h3 id="binding-y-scope-de-var-let-const">Binding y Scope de var, let, const</h3>
+<pre><code class="lang-js"><span class="hljs-keyword">let</span> x = <span class="hljs-number">10</span>;
+<span class="hljs-keyword">if</span> (<span class="hljs-literal">true</span>) {
+  <span class="hljs-keyword">let</span> y = <span class="hljs-number">20</span>;
+  <span class="hljs-keyword">var</span> z = <span class="hljs-number">30</span>;
+  <span class="hljs-keyword">let</span> x = <span class="hljs-number">1</span>;
+  <span class="hljs-built_in">console</span>.log(x + y + z);
+  <span class="hljs-comment">// → 51</span>
+}
+<span class="hljs-built_in">console</span>.log(x + z);
+<span class="hljs-comment">// → 40</span>
+</code></pre>
+<p>la variable <strong>x</strong> dentro del if, esta en un scope distinto a la que esta afuera, por lo que no se sobreescribe.</p>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-9">
+        <div data-id="9" class="slide-overlay"></div>
+        <section class="slide-content"><h3 id="funciones">Funciones</h3>
+<p>En javascript existe más de una forma de declarar una función.</p>
+<pre><code class="lang-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">square</span>(<span class="hljs-params">x</span>)</span>{
+  <span class="hljs-keyword">return</span> x * x;
+};
+
+<span class="hljs-keyword">const</span> square = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">x</span>) </span>{
+  <span class="hljs-keyword">return</span> x * x;
+};
+
+<span class="hljs-keyword">const</span> square = <span class="hljs-function">(<span class="hljs-params">x</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> x * x;
+};
+</code></pre>
+<pre><code class="lang-js">square(<span class="hljs-number">10</span>):
+<span class="hljs-comment">// → 100</span>
+</code></pre>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-10">
+        <div data-id="10" class="slide-overlay"></div>
+        <section class="slide-content"><h3 id="hoisting">Hoisting</h3>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> tipoAnimal = <span class="hljs-string">"Gato"</span>;
+nombreDelGato(<span class="hljs-string">"Juanito"</span>);
+<span class="hljs-comment">// → Mi gato se llama Juanito</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">nombreDelGato</span>(<span class="hljs-params">nombre</span>) </span>{ 
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Mi "</span>+tipoAnimal+<span class="hljs-string">" se llama "</span> + nombre);
+}
+</code></pre>
+<h2 id="descubra-el-error">Descubra el error</h2>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-11">
+        <div data-id="11" class="slide-overlay"></div>
+        <section class="slide-content"><p>Un ejemplo común es decir que en el <strong>Hoisting</strong> las declaraciones de variables y funciones se mueven al inicio del codigo, <strong>peeeeeeeeeero...</strong> lo que en realidad ocurre es que estas declaraciones se guardan en memoria en fase de compilación.</p>
+<h1 id="-dijo-compilaci-n-">¿Dijo compilación?</h1>
+<pre><code class="lang-js">nombreDelGato(<span class="hljs-string">"Juanito"</span>);
+<span class="hljs-comment">// → Mi undefined se llama Juanito</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">nombreDelGato</span>(<span class="hljs-params">nombre</span>) </span>{
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Mi "</span> + tipoAnimal + <span class="hljs-string">" se llama "</span> + nombre);
+}
+<span class="hljs-keyword">var</span> tipoAnimal = <span class="hljs-string">"Gato"</span>;
+</code></pre>
+<p><a href="https://medium.com/@tatymolys/var-let-y-const-donde-cuando-y-por-qu%C3%A9-d4a0ee66883b">https://medium.com/@tatymolys/var-let-y-const-donde-cuando-y-por-qu%C3%A9-d4a0ee66883b</a></p>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-12">
+        <div data-id="12" class="slide-overlay"></div>
+        <section class="slide-content"><h3 id="scope-anidado">Scope Anidado</h3>
+<p>Como deciamos, una funcion puede guardarse dentro de una variable, por lo que podemos tener algo como una función dentro de otra</p>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> mayonesaCasera = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">factor</span>) </span>{
+  <span class="hljs-keyword">const</span> ingredient = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">amount, unit, name</span>) </span>{
+    <span class="hljs-keyword">let</span> ingredientAmount = amount * factor;
+    <span class="hljs-keyword">if</span> (ingredientAmount &gt; <span class="hljs-number">1</span>) {
+      unit += <span class="hljs-string">"s"</span>;
+    }
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`<span class="hljs-subst">${ingredientAmount}</span> <span class="hljs-subst">${unit}</span> <span class="hljs-subst">${name}</span>`</span>);
+  };
+  ingredient(<span class="hljs-number">1</span>, <span class="hljs-string">""</span>, <span class="hljs-string">"huevo"</span>);
+  ingredient(<span class="hljs-number">0.5</span>, <span class="hljs-string">"cucharadita"</span>, <span class="hljs-string">"sal"</span>);
+  ingredient(<span class="hljs-number">1</span>, <span class="hljs-string">"cucharada"</span>, <span class="hljs-string">"jugo de limón"</span>);
+  ingredient(<span class="hljs-number">0.15</span>, <span class="hljs-string">"litro"</span>, <span class="hljs-string">"aceite"</span>);
+};
+</code></pre>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-13">
+        <div data-id="13" class="slide-overlay"></div>
+        <section class="slide-content"><h3 id="data-structures-objects-and-arrays">Data Structures: Objects and Arrays</h3>
+<p>Array</p>
+<pre><code class="lang-js"><span class="hljs-keyword">let</span> listOfNumbers = [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">11</span>];
+<span class="hljs-built_in">console</span>.log(listOfNumbers[<span class="hljs-number">2</span>]);      <span class="hljs-comment">// → 5</span>
+<span class="hljs-built_in">console</span>.log(listOfNumbers[<span class="hljs-number">2</span> - <span class="hljs-number">1</span>]);  <span class="hljs-comment">// → 3</span>
+</code></pre>
+<p>Objeto</p>
+<pre><code class="lang-js"><span class="hljs-keyword">let</span> day1 = {
+  <span class="hljs-attr">squirrel</span>: <span class="hljs-literal">false</span>
+};
+<span class="hljs-built_in">console</span>.log(day1.squirrel); <span class="hljs-comment">// → false</span>
+<span class="hljs-built_in">console</span>.log(day1.wolf);<span class="hljs-comment">// → undefined</span>
+day1.wolf = <span class="hljs-literal">false</span>;
+<span class="hljs-built_in">console</span>.log(day1.wolf);<span class="hljs-comment">// → false</span>
+</code></pre>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-14">
+        <div data-id="14" class="slide-overlay"></div>
+        <section class="slide-content"><h3 id="destructuring">Destructuring</h3>
+<pre><code class="lang-js"><span class="hljs-keyword">let</span> {name, weight} = {<span class="hljs-attr">name</span>: <span class="hljs-string">"Eulalio"</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">23</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">1.75</span>, <span class="hljs-attr">weight</span>: <span class="hljs-string">"80kg"</span>};
+<span class="hljs-built_in">console</span>.log(name+<span class="hljs-string">" - "</span>+weight);
+<span class="hljs-comment">// → Eulalio - 80kg</span>
+</code></pre>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> foo = [<span class="hljs-string">"uno"</span>, <span class="hljs-string">"dos"</span>, <span class="hljs-string">"tres"</span>];
+
+<span class="hljs-keyword">var</span> uno  = foo[<span class="hljs-number">0</span>];
+<span class="hljs-keyword">var</span> dos  = foo[<span class="hljs-number">1</span>];
+<span class="hljs-keyword">var</span> tres = foo[<span class="hljs-number">2</span>];
+<span class="hljs-comment">// lo mismo en 1 linea</span>
+<span class="hljs-keyword">var</span> [uno, dos, tres] = foo;
+</code></pre>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-15">
+        <div data-id="15" class="slide-overlay"></div>
+        <section class="slide-content"><h3 id="objetos-un-poco-mas-all-">Objetos... un poco mas allá</h3>
+<pre><code class="lang-js">  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">speak</span>(<span class="hljs-params">line</span>) </span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`The <span class="hljs-subst">${<span class="hljs-keyword">this</span>.type}</span> rabbit says '<span class="hljs-subst">${line}</span>'`</span>);
+  }
+  <span class="hljs-keyword">let</span> whiteRabbit = {<span class="hljs-attr">type</span>: <span class="hljs-string">"white"</span>, speak};
+  <span class="hljs-keyword">let</span> hungryRabbit = {<span class="hljs-attr">type</span>: <span class="hljs-string">"hungry"</span>, speak};
+
+  whiteRabbit.speak(<span class="hljs-string">"I'm white and cute"</span>);
+  <span class="hljs-comment">// → The white rabbit says 'I'm white and cute'</span>
+  hungryRabbit.speak(<span class="hljs-string">"I'm starving!"</span>);
+  <span class="hljs-comment">// → The hungry rabbit says 'I'm starving!'</span>
+</code></pre>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-16">
+        <div data-id="16" class="slide-overlay"></div>
+        <section class="slide-content"><h3 id="clases">Clases</h3>
+<pre><code class="lang-js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Rabbit</span> </span>{
+  <span class="hljs-keyword">constructor</span>(type) {
+    <span class="hljs-keyword">this</span>.type = type;
+  }
+  speak(line) {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`The <span class="hljs-subst">${<span class="hljs-keyword">this</span>.type}</span> rabbit says '<span class="hljs-subst">${line}</span>'`</span>);
+  }
+}
+
+<span class="hljs-keyword">let</span> whiteRabbit = <span class="hljs-keyword">new</span> Rabbit(<span class="hljs-string">"white"</span>);
+<span class="hljs-keyword">let</span> hungryRabbit = <span class="hljs-keyword">new</span> Rabbit(<span class="hljs-string">"hungry"</span>);
+whiteRabbit.speak(<span class="hljs-string">"I'm white and cute"</span>)
+hungryRabbit.speak(<span class="hljs-string">"I'm starving!"</span>)
+</code></pre>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-17">
+        <div data-id="17" class="slide-overlay"></div>
+        <section class="slide-content"><h1 id="asynchronous-programming">Asynchronous Programming</h1>
+<p> Al trabajar con funciones asíncronas tenemos la ventaja de que no necesitamos esperar el resultado de esta, para poder seguir ejecutando el resto del codigo. </p>
+<p> Pero como le dijo el Tio Ben a Peter parker: <strong>&quot;Un gran poder conlleva una gran responsabilidad&quot;</strong></p>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-18">
+        <div data-id="18" class="slide-overlay"></div>
+        <section class="slide-content"><h1 id="asynchronous-programming">Asynchronous Programming</h1>
+<pre><code class="lang-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">httpGet</span>(<span class="hljs-params">theUrl</span>)</span>{
+    <span class="hljs-keyword">var</span> xmlHttp = <span class="hljs-keyword">new</span> XMLHttpRequest();
+    xmlHttp.open( <span class="hljs-string">"GET"</span>, theUrl, <span class="hljs-literal">false</span> ); <span class="hljs-comment">// sincrona</span>
+    xmlHttp.send( <span class="hljs-literal">null</span> );
+    <span class="hljs-keyword">return</span> xmlHttp.responseText;
+}
+<span class="hljs-built_in">console</span>.log(httpGet(<span class="hljs-string">'https://jsonplaceholder.typicode.com/posts/1'</span>));
+</code></pre>
+<pre><code class="lang-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">httpGet</span>(<span class="hljs-params">theUrl</span>)</span>{
+    <span class="hljs-keyword">var</span> xmlHttp = <span class="hljs-keyword">new</span> XMLHttpRequest();
+    xmlHttp.open( <span class="hljs-string">"GET"</span>, theUrl, <span class="hljs-literal">true</span> ); <span class="hljs-comment">// asincrona</span>
+    xmlHttp.send( <span class="hljs-literal">null</span> );
+    <span class="hljs-keyword">return</span> xmlHttp.responseText;
+}
+<span class="hljs-built_in">console</span>.log(httpGet(<span class="hljs-string">'https://jsonplaceholder.typicode.com/posts/1'</span>));
+</code></pre>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-19">
+        <div data-id="19" class="slide-overlay"></div>
+        <section class="slide-content"><h1 id="asynchronous-programming-promises">Asynchronous Programming &amp; Promises</h1>
+<p><img src="https://www.deadcoderising.com/content/images/2017/09/sync-async.gif" alt="Async"></p>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-20">
+        <div data-id="20" class="slide-overlay"></div>
+        <section class="slide-content"><h1 id="asynchronous-programming-promises">Asynchronous Programming &amp; Promises</h1>
+<p><img src="https://www.deadcoderising.com/content/images/2017/09/successful_callback.gif" alt="AsyncProm"></p>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-21">
+        <div data-id="21" class="slide-overlay"></div>
+        <section class="slide-content"><h1 id="asynchronous-programming-promises">Asynchronous Programming &amp; Promises</h1>
+<p>Una Promesa puede tener 3 estados:</p>
+<ul>
+<li>pendiente (pending): estado inicial, no cumplida o rechazada.</li>
+<li>cumplida (fulfilled): significa que la operación se completó satisfactoriamente.</li>
+<li>rechazada (rejected): significa que la operación falló.</li>
+</ul>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-22">
+        <div data-id="22" class="slide-overlay"></div>
+        <section class="slide-content"><h1 id="asynchronous-programming-promises">Asynchronous Programming &amp; Promises</h1>
+<pre><code class="lang-js"><span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resolver, rechazar</span>) </span>{ ... } );
+</code></pre>
+<p>Esto es equivalente al ejemplo asincrono de las slides anteriores:</p>
+<pre><code class="lang-js">fetch(<span class="hljs-string">'https://jsonplaceholder.typicode.com/posts/1'</span>)
+  .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>) </span>{
+    <span class="hljs-keyword">return</span> response.json();
+  })
+  .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">myJson</span>) </span>{
+    <span class="hljs-built_in">console</span>.log(myJson);
+  })
+  .catch(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">reason</span>) </span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'la promesa falló por error en IA4'</span>);
+  });
+</code></pre>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-23">
+        <div data-id="23" class="slide-overlay"></div>
+        <section class="slide-content"><h1 id="asynchronous-programming-promises">Asynchronous Programming &amp; Promises</h1>
+<pre><code class="lang-js"><span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resolver, rechazar</span>) </span>{ ... } );
+</code></pre>
+<p>Esto es equivalente al ejemplo asincrono de las slides anteriores:</p>
+<pre><code class="lang-js">fetch(<span class="hljs-string">'https://jsonplaceholder.typicode.com/posts/1'</span>)
+  .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>) </span>{
+    <span class="hljs-keyword">return</span> response.json();
+  })
+  .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">myJson</span>) </span>{
+    <span class="hljs-built_in">console</span>.log(myJson);
+  })
+  .catch(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">reason</span>) </span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'la promesa falló por error en IA4'</span>);
+  });
+</code></pre>
+<p><a href="https://codesandbox.io/s/eager-fermat-u7s38">https://codesandbox.io/s/eager-fermat-u7s38</a> (revisar)</p>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-24">
+        <div data-id="24" class="slide-overlay"></div>
+        <section class="slide-content"><h1 id="import-export">Import &amp; export</h1>
+<pre><code class="lang-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">apiCallImages</span>(<span class="hljs-params"></span>)</span>{
+  <span class="hljs-comment">//...do some stuff</span>
+  <span class="hljs-keyword">return</span> result;
+}
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">apiCallAlbums</span>(<span class="hljs-params"></span>)</span>{
+  <span class="hljs-comment">//...do sanotherome stuff</span>
+  <span class="hljs-keyword">return</span> result;
+}
+<span class="hljs-keyword">export</span> { apiCallImages, apiCallAlbums };
+</code></pre>
+<p>Esto es equivalente al ejemplo asincrono de las slides anteriores:</p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> { apiCallImages, apiCallAlbums } <span class="hljs-keyword">from</span> <span class="hljs-string">"./apiCall"</span>;
+</code></pre>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden author-slide" id="slide-25">
+        <div data-id="25" class="slide-overlay"></div>
+        <section class="slide-content"><div class="author">
+  <h1 class="name">Claudio Ulloa</h1>
+</div>
+</section>
+      </div>
+    </div>
+</div>
+
+  <div class="controls">
+    <div class="arrow prev"></div>
+    <div class="overview">☷</div>
+    <div class="arrow next"></div>
+  </div>
+
+
+  <script type="text/javascript">
+    /**
+ * Returns the current page number of the presentation.
+ */
+function currentPosition() {
+  return parseInt(document.querySelector('.slide:not(.hidden)').id.slice(6));
+}
+
+/**
+ * Navigates forward n pages
+ * If n is negative, we will navigate in reverse
+ */
+function navigate(n) {
+  var position = currentPosition();
+  var numSlides = document.getElementsByClassName('slide').length;
+
+  var $fragments = document.querySelectorAll('#slide-' + position + ' .fragment');
+  var fragmentsFinished = false;
+  if ($fragments.length) {
+    if (n > 0) {
+      var $f = document.querySelectorAll('#slide-' + position + ' .fragment.hidden');
+      if (!$f.length) fragmentsFinished = true;
+      else $f[0].classList.remove('hidden');
+    } else {
+      var $f = document.querySelectorAll('#slide-' + position + ' .fragment:not(.hidden)');
+      if (!$f.length) fragmentsFinished = true;
+      else $f[$f.length - 1].classList.add('hidden');
+    }
+  } else {
+    fragmentsFinished = true;
+  }
+
+  if (fragmentsFinished) {
+    /* Positions are 1-indexed, so we need to add and subtract 1 */
+    var nextPosition = (position - 1 + n) % numSlides + 1;
+
+    /* Normalize nextPosition in-case of a negative modulo result */
+    nextPosition = (nextPosition - 1 + numSlides) % numSlides + 1;
+
+    document.getElementById('slide-' + position).classList.add('hidden');
+    document.getElementById('slide-' + nextPosition).classList.remove('hidden');
+
+    updateProgress();
+    updateURL();
+    updateTabIndex();
+  }
+
+}
+
+/**
+ * Updates the current URL to include a hashtag of the current page number.
+ */
+function updateURL() {
+  try {
+    window.history.replaceState({}, null, '#' + currentPosition());
+  } catch (e) {
+    window.location.hash = currentPosition();
+  }
+}
+
+/**
+ * Sets the progress indicator.
+ */
+function updateProgress() {
+  var progressBar = document.querySelector('.progress-bar');
+
+  if (progressBar !== null) {
+    var numSlides = document.getElementsByClassName('slide').length;
+    var position = currentPosition() - 1;
+    var percent = (numSlides === 1) ? 100 : 100 * position / (numSlides - 1);
+    progressBar.style.width = percent.toString() + '%';
+  }
+}
+
+/**
+ * Removes tabindex property from all links on the current slide, sets
+ * tabindex = -1 for all links on other slides. Prevents slides from appearing
+ * out of control.
+ */
+function updateTabIndex() {
+  var allLinks = document.querySelectorAll('.slide a');
+  var position = currentPosition();
+  var currentPageLinks = document.getElementById('slide-' + position).querySelectorAll('a');
+  var i;
+
+  for (i = 0; i < allLinks.length; i++) {
+    allLinks[i].setAttribute('tabindex', -1);
+  }
+
+  for (i = 0; i < currentPageLinks.length; i++) {
+    currentPageLinks[i].removeAttribute('tabindex');
+  }
+}
+
+/**
+ * Determines whether or not we are currently in full screen mode
+ */
+function isFullScreen() {
+  return document.fullscreenElement ||
+    document.mozFullScreenElement ||
+    document.webkitFullscreenElement ||
+    document.msFullscreenElement;
+}
+
+/**
+ * Toggle fullScreen mode on document element.
+ * Works on chrome (>= 15), firefox (>= 9), ie (>= 11), opera(>= 12.1), safari (>= 5).
+ */
+function toggleFullScreen() {
+  /* Convenient renames */
+  var docElem = document.documentElement;
+  var doc = document;
+
+  docElem.requestFullscreen =
+    docElem.requestFullscreen ||
+    docElem.msRequestFullscreen ||
+    docElem.mozRequestFullScreen ||
+    docElem.webkitRequestFullscreen.bind(docElem, Element.ALLOW_KEYBOARD_INPUT);
+
+  doc.exitFullscreen =
+    doc.exitFullscreen ||
+    doc.msExitFullscreen ||
+    doc.mozCancelFullScreen ||
+    doc.webkitExitFullscreen;
+
+  isFullScreen() ? doc.exitFullscreen() : docElem.requestFullscreen();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Update the tabindex to prevent weird slide transitioning
+  updateTabIndex();
+
+  // If the location hash specifies a page number, go to it.
+  var page = window.location.hash.slice(1);
+  if (page) {
+    navigate(parseInt(page) - 1);
+  }
+
+  document.onkeydown = function(e) {
+    if(e.target.tagName.toLowerCase() === 'textarea') return;
+    var kc = e.keyCode;
+
+    // left, down, H, J, backspace, PgUp - BACK
+    // up, right, K, L, space, PgDn - FORWARD
+    // enter - FULLSCREEN
+    if (kc === 37 || kc === 40 || kc === 8 || kc === 72 || kc === 74 || kc === 33) {
+      navigate(-1);
+    } else if (kc === 38 || kc === 39 || kc === 32 || kc === 75 || kc === 76 || kc === 34) {
+      navigate(1);
+    } else if (kc === 13) {
+      toggleFullScreen();
+    } else if (kc === 27) {
+      toggleOverview();
+    }
+  };
+
+  if (document.querySelector('.next') && document.querySelector('.prev')) {
+    document.querySelector('.next').onclick = function(e) {
+      e.preventDefault();
+      navigate(1);
+    };
+
+    document.querySelector('.prev').onclick = function(e) {
+      e.preventDefault();
+      navigate(-1);
+    };
+  }
+  if (document.querySelector('.overview')) {
+    document.querySelector('.overview').onclick = function(e) {
+      toggleOverview();
+    }
+  }
+  var $overlays = document.querySelectorAll('.slide-overlay');
+  [].forEach.call($overlays, function($overlay) {
+    $overlay.onclick = function(event) {
+      navigate(parseInt(event.target.dataset.id) - currentPosition());
+      toggleOverview();
+    }
+  });
+
+  var $fragments = document.querySelectorAll('.fragment');
+  [].forEach.call($fragments, function($fragment) {
+    $fragment.classList.add('hidden');
+  });
+
+});
+
+function toggleOverview() {
+  if (window.$style !== undefined) {
+    window.$style.remove();
+    delete window.$style;
+    document.querySelector('.slides').classList.remove('active');
+  } else {
+    var $slides = document.querySelector('.slides');
+    $slides.classList.add('active');
+    var slidesList = document.querySelectorAll('.slide-wrapper');
+
+    var w = window,
+      d = document,
+      e = d.documentElement,
+      g = d.getElementsByTagName('body')[0],
+      x = w.innerWidth || e.clientWidth || g.clientWidth,
+      y = w.innerHeight || e.clientHeight || g.clientHeight;
+
+    window.$style = document.createElement('style');
+    window.$style.innerHTML = '.slide-wrapper {width: ' + (x * 0.25) + 'px; height: ' + (y * 0.25) + 'px; } body .slide {width: ' + x + 'px; height: ' + y + 'px; position: relative; transform: scale(0.25,0.25); transform-origin: 0 0; } .slide.hidden{display: block; }';
+
+    document.getElementsByTagName('head')[0].appendChild(window.$style);
+  }
+}
+
+/**
+ * NEW BUBBLES
+ */
+// var canvas = document.getElementById('bubbling');
+var slide1 = document.getElementById("slide-1")
+var canvas = document.createElement("canvas");
+canvas.id = "bubbling";
+slide1.appendChild(canvas);
+var ctx = canvas.getContext('2d');
+var particles = [];
+var particleCount = 280;
+
+for (var i = 0; i < particleCount; i++) {
+  particles.push(new particle());
+}
+
+function particle() {
+  this.x = Math.random() * canvas.width;
+  this.y = canvas.height + Math.random() * 300;
+  this.speed = .5 + Math.random();
+  this.radius = Math.random() * 3;
+  this.opacity = (Math.random() * 300) / 1000;
+}
+
+function loopBubbles() {
+  requestAnimationFrame(loopBubbles);
+  draw();
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.globalCompositeOperation = 'lighter';
+  for (var i = 0; i < particles.length; i++) {
+    var p = particles[i];
+    ctx.beginPath();
+    ctx.fillStyle = 'rgba(255,255,255,' + p.opacity + ')';
+    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2, false);
+    ctx.fill();
+    p.y -= p.speed;
+    if (p.y <= -10)
+      particles[i] = new particle();
+  }
+}
+
+// start bubbles
+loopBubbles();
+  </script>
+</body>
+</html>
